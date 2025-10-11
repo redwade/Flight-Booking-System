@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Flight.Core\Flight.Core\Flight.Core.csproj" />
+    <ProjectReference Include="..\..\Flight.Application\Flight.Application\Flight.Application.csproj" />
+    <ProjectReference Include="..\..\Flight.Infrastructure\Flight.Infrastructure\Flight.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\..\BuildingBlocks\MassTransit\BuildingBlocks.MassTransit\BuildingBlocks.MassTransit.csproj" />
+  </ItemGroup>
+
+</Project>

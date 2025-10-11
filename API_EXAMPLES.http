@@ -1,0 +1,157 @@
+### Flight Booking System - API Examples
+
+### Variables
+@bookingApiUrl = http://localhost:5001
+@flightApiUrl = http://localhost:5002
+@paymentApiUrl = http://localhost:5003
+@notificationApiUrl = http://localhost:5004
+
+### ============================================
+### FLIGHT API - Create Flight
+### ============================================
+POST {{flightApiUrl}}/api/flights
+Content-Type: application/json
+
+{
+  "flightNumber": "FL123",
+  "airline": "Sky Airlines",
+  "departureAirport": "JFK",
+  "arrivalAirport": "LAX",
+  "departureTime": "2025-10-15T10:00:00Z",
+  "arrivalTime": "2025-10-15T15:00:00Z",
+  "totalSeats": 150,
+  "pricePerSeat": 250.00,
+  "aircraftType": "Boeing 737"
+}
+
+### ============================================
+### FLIGHT API - Search Flights
+### ============================================
+GET {{flightApiUrl}}/api/flights/search?departureAirport=JFK&arrivalAirport=LAX&departureDate=2025-10-15
+
+### ============================================
+### FLIGHT API - Health Check
+### ============================================
+GET {{flightApiUrl}}/api/flights/health
+
+### ============================================
+### BOOKING API - Create Booking
+### ============================================
+POST {{bookingApiUrl}}/api/bookings
+Content-Type: application/json
+
+{
+  "flightId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+  "passengerName": "John Doe",
+  "passengerEmail": "john.doe@example.com",
+  "passengerPhone": "+1234567890",
+  "numberOfSeats": 2,
+  "totalAmount": 500.00
+}
+
+### ============================================
+### BOOKING API - Get Booking by ID
+### ============================================
+GET {{bookingApiUrl}}/api/bookings/3fa85f64-5717-4562-b3fc-2c963f66afa6
+
+### ============================================
+### BOOKING API - Health Check
+### ============================================
+GET {{bookingApiUrl}}/api/bookings/health
+
+### ============================================
+### PAYMENT API - Process Payment
+### ============================================
+POST {{paymentApiUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "bookingId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+  "amount": 500.00,
+  "currency": "USD",
+  "paymentMethod": "CreditCard"
+}
+
+### ============================================
+### PAYMENT API - Get Payments by Booking ID
+### ============================================
+GET {{paymentApiUrl}}/api/payments/booking/3fa85f64-5717-4562-b3fc-2c963f66afa6
+
+### ============================================
+### PAYMENT API - Health Check
+### ============================================
+GET {{paymentApiUrl}}/api/payments/health
+
+### ============================================
+### NOTIFICATION API - Get Notifications by User ID
+### ============================================
+GET {{notificationApiUrl}}/api/notifications/user/3fa85f64-5717-4562-b3fc-2c963f66afa7
+
+### ============================================
+### NOTIFICATION API - Get Notifications by Booking ID
+### ============================================
+GET {{notificationApiUrl}}/api/notifications/booking/3fa85f64-5717-4562-b3fc-2c963f66afa6
+
+### ============================================
+### NOTIFICATION API - Get Pending Notifications
+### ============================================
+GET {{notificationApiUrl}}/api/notifications/pending
+
+### ============================================
+### NOTIFICATION API - Health Check
+### ============================================
+GET {{notificationApiUrl}}/api/notifications/health
+
+### ============================================
+### COMPLETE WORKFLOW EXAMPLE
+### ============================================
+
+### Step 1: Create a Flight
+POST {{flightApiUrl}}/api/flights
+Content-Type: application/json
+
+{
+  "flightNumber": "FL456",
+  "airline": "Global Airways",
+  "departureAirport": "SFO",
+  "arrivalAirport": "NYC",
+  "departureTime": "2025-10-20T08:00:00Z",
+  "arrivalTime": "2025-10-20T16:00:00Z",
+  "totalSeats": 200,
+  "pricePerSeat": 350.00,
+  "aircraftType": "Airbus A320"
+}
+
+### Step 2: Search for Flights
+GET {{flightApiUrl}}/api/flights/search?departureAirport=SFO&arrivalAirport=NYC&departureDate=2025-10-20
+
+### Step 3: Create a Booking (use FlightId from Step 1 response)
+POST {{bookingApiUrl}}/api/bookings
+Content-Type: application/json
+
+{
+  "flightId": "REPLACE_WITH_FLIGHT_ID",
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
+  "passengerName": "Jane Smith",
+  "passengerEmail": "jane.smith@example.com",
+  "passengerPhone": "+1987654321",
+  "numberOfSeats": 1,
+  "totalAmount": 350.00
+}
+
+### Step 4: Process Payment (use BookingId from Step 3 response)
+POST {{paymentApiUrl}}/api/payments
+Content-Type: application/json
+
+{
+  "bookingId": "REPLACE_WITH_BOOKING_ID",
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
+  "amount": 350.00,
+  "currency": "USD",
+  "paymentMethod": "CreditCard"
+}
+
+### Step 5: Check Notifications (use UserId from previous steps)
+GET {{notificationApiUrl}}/api/notifications/user/3fa85f64-5717-4562-b3fc-2c963f66afa8

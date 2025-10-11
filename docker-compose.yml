@@ -1,0 +1,138 @@
+version: '3.8'
+
+services:
+  # RabbitMQ Message Broker
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: flightbooking-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - flightbooking-network
+
+  # MongoDB for Flight Service
+  mongodb:
+    image: mongo:latest
+    container_name: flightbooking-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - flightbooking-network
+
+  # Redis for Booking Service
+  redis:
+    image: redis:alpine
+    container_name: flightbooking-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - flightbooking-network
+
+  # PostgreSQL for Payment Service
+  postgres:
+    image: postgres:latest
+    container_name: flightbooking-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: PaymentDB
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - flightbooking-network
+
+  # Booking API
+  booking-api:
+    build:
+      context: .
+      dockerfile: src/Services/Booking/Booking.API/Dockerfile
+    container_name: booking-api
+    ports:
+      - "5001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Redis=redis:6379
+      - RabbitMQ__Host=rabbitmq
+    depends_on:
+      - redis
+      - rabbitmq
+    networks:
+      - flightbooking-network
+
+  # Flight API
+  flight-api:
+    build:
+      context: .
+      dockerfile: src/Services/Flight/Flight.API/Dockerfile
+    container_name: flight-api
+    ports:
+      - "5002:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__MongoDB=mongodb://admin:admin123@mongodb:27017
+      - MongoDB__DatabaseName=FlightDB
+      - RabbitMQ__Host=rabbitmq
+    depends_on:
+      - mongodb
+      - rabbitmq
+    networks:
+      - flightbooking-network
+
+  # Payment API
+  payment-api:
+    build:
+      context: .
+      dockerfile: src/Services/Payment/Payment.API/Dockerfile
+    container_name: payment-api
+    ports:
+      - "5003:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__PostgreSQL=Host=postgres;Database=PaymentDB;Username=postgres;Password=postgres
+      - RabbitMQ__Host=rabbitmq
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks:
+      - flightbooking-network
+
+  # Notification API
+  notification-api:
+    build:
+      context: .
+      dockerfile: src/Services/Notification/Notification.API/Dockerfile
+    container_name: notification-api
+    ports:
+      - "5004:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMQ__Host=rabbitmq
+    depends_on:
+      - rabbitmq
+    networks:
+      - flightbooking-network
+
+volumes:
+  rabbitmq_data:
+  mongodb_data:
+  redis_data:
+  postgres_data:
+
+networks:
+  flightbooking-network:
+    driver: bridge
