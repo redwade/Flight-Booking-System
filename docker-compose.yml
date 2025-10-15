@@ -127,11 +127,47 @@ services:
     networks:
       - flightbooking-network
 
+  # Ollama for AI/LLM (Gemma model)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: flightbooking-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - flightbooking-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    # Note: GPU support is optional. Remove the deploy section if you don't have GPU
+
+  # AI API
+  ai-api:
+    build:
+      context: .
+      dockerfile: src/Services/AI/AI.API/Dockerfile
+    container_name: ai-api
+    ports:
+      - "5005:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Ollama__BaseUrl=http://ollama:11434
+    depends_on:
+      - ollama
+    networks:
+      - flightbooking-network
+
 volumes:
   rabbitmq_data:
   mongodb_data:
   redis_data:
   postgres_data:
+  ollama_data:
 
 networks:
   flightbooking-network:

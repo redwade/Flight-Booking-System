@@ -1,0 +1,43 @@
+@AI.API_HostAddress = http://localhost:5005
+
+### Health Check
+GET {{AI.API_HostAddress}}/api/ai/health
+
+### Send Chat Message
+POST {{AI.API_HostAddress}}/api/ai/chat
+Content-Type: application/json
+
+{
+  "userId": "user123",
+  "message": "I want to book a flight from New York to London. What are my options?",
+  "sessionId": "session-001"
+}
+
+### Get Flight Recommendations
+POST {{AI.API_HostAddress}}/api/ai/recommendations
+Content-Type: application/json
+
+{
+  "userId": "user123",
+  "origin": "New York",
+  "destination": "London",
+  "departureDate": "2025-11-15",
+  "preferredClass": "Business",
+  "maxBudget": 2000
+}
+
+### Get Chat History by Session
+GET {{AI.API_HostAddress}}/api/ai/chat/history?sessionId=session-001
+
+### Get Chat History by User
+GET {{AI.API_HostAddress}}/api/ai/chat/history?userId=user123
+
+### Continue Chat Conversation
+POST {{AI.API_HostAddress}}/api/ai/chat
+Content-Type: application/json
+
+{
+  "userId": "user123",
+  "message": "What about economy class options?",
+  "sessionId": "session-001"
+}

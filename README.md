@@ -9,6 +9,7 @@ A comprehensive flight booking system built with .NET 9.0 microservices architec
 - **Flight Service**: Handles flight information and availability (MongoDB)
 - **Payment Service**: Processes payments (PostgreSQL)
 - **Notification Service**: Sends notifications to users (In-Memory)
+- **AI Service**: AI-powered chatbot and recommendations using Gemma model (Ollama)
 
 ### Architecture Layers
 Each microservice follows clean architecture with:
@@ -30,6 +31,8 @@ Each microservice follows clean architecture with:
 - **MongoDB**: Document database for Flight service
 - **Redis**: In-memory data store for Booking service
 - **PostgreSQL**: Relational database for Payment service
+- **Ollama**: Local LLM runtime for Gemma model
+- **Gemma**: Google's AI model for intelligent features
 - **xUnit**: Testing framework
 - **Moq**: Mocking framework
 - **Swagger/OpenAPI**: API documentation
@@ -58,16 +61,22 @@ FlightBookingSystem/
 │       │   ├── Payment.Infrastructure/  # PostgreSQL repository
 │       │   ├── Payment.Application/
 │       │   └── Payment.API/
-│       └── Notification/
-│           ├── Notification.Core/
-│           ├── Notification.Infrastructure/
-│           ├── Notification.Application/  # Event consumers
-│           └── Notification.API/
+│       ├── Notification/
+│       │   ├── Notification.Core/
+│       │   ├── Notification.Infrastructure/
+│       │   ├── Notification.Application/  # Event consumers
+│       │   └── Notification.API/
+│       └── AI/
+│           ├── AI.Core/
+│           ├── AI.Infrastructure/   # Ollama integration
+│           ├── AI.Application/
+│           └── AI.API/
 ├── tests/
 │   ├── Booking.API.Tests/
 │   ├── Flight.API.Tests/
 │   ├── Payment.API.Tests/
 │   ├── Notification.API.Tests/
+│   ├── AI.API.Tests/
 │   └── MassTransit.Tests/
 ├── docker-compose.yml
 └── FlightBookingSystem.sln
@@ -79,6 +88,7 @@ FlightBookingSystem/
 - .NET 9.0 SDK
 - Docker Desktop
 - Visual Studio 2022 / VS Code / Rider
+- Ollama (for AI features) - [Download here](https://ollama.ai)
 
 ### Running with Docker Compose
 
@@ -92,23 +102,39 @@ This will start:
 - MongoDB (port 27017)
 - Redis (port 6379)
 - PostgreSQL (port 5432)
+- Ollama (port 11434)
 - All microservices APIs
 
-2. **Access the services**:
+2. **Pull the Gemma model** (required for AI service):
+```bash
+docker exec -it flightbooking-ollama ollama pull gemma2:2b
+```
+
+3. **Access the services**:
 - Booking API: http://localhost:5001/swagger
 - Flight API: http://localhost:5002/swagger
 - Payment API: http://localhost:5003/swagger
 - Notification API: http://localhost:5004/swagger
+- AI API: http://localhost:5005/swagger
 - RabbitMQ Management: http://localhost:15672 (guest/guest)
 
 ### Running Locally (Development)
 
-1. **Start infrastructure services**:
+1. **Install and start Ollama**:
+```bash
+# Install Ollama from https://ollama.ai
+ollama serve
+
+# Pull the Gemma model
+ollama pull gemma2:2b
+```
+
+2. **Start infrastructure services**:
 ```bash
 docker-compose up -d rabbitmq mongodb redis postgres
 ```
 
-2. **Run each microservice**:
+3. **Run each microservice**:
 ```bash
 # Booking API
 cd src/Services/Booking/Booking.API/Booking.API
@@ -124,6 +150,10 @@ dotnet run
 
 # Notification API
 cd src/Services/Notification/Notification.API/Notification.API
+dotnet run
+
+# AI API
+cd src/Services/AI/AI.API/AI.API
 dotnet run
 ```
 
@@ -162,6 +192,12 @@ dotnet test tests/MassTransit.Tests/MassTransit.Tests/MassTransit.Tests.csproj
 - `GET /api/notifications/booking/{bookingId}` - Get notifications by booking ID
 - `GET /api/notifications/pending` - Get pending notifications
 - `GET /api/notifications/health` - Health check
+
+### AI API (Port 5005)
+- `POST /api/ai/chat` - Send message to AI chatbot
+- `POST /api/ai/recommendations` - Get AI-powered flight recommendations
+- `GET /api/ai/chat/history` - Get chat history
+- `GET /api/ai/health` - Health check
 
 ## 🔄 Event Flow
 
@@ -224,6 +260,16 @@ Example configuration files are included in each API project.
 ### Health Checks
 Each API has a `/health` endpoint for monitoring service status.
 
+## 🤖 AI Features
+
+The AI Service provides intelligent features powered by Google's Gemma model:
+
+- **Conversational Chatbot**: Natural language support for flight bookings
+- **Smart Recommendations**: Personalized flight suggestions based on preferences
+- **Pattern Analysis**: Insights into booking trends and behaviors
+
+For detailed AI service documentation, see [AI_SERVICE_README.md](./AI_SERVICE_README.md)
+
 ## 🚧 Future Enhancements
 
 - [ ] Add API Gateway (Ocelot/YARP)
@@ -236,6 +282,8 @@ Each API has a `/health` endpoint for monitoring service status.
 - [ ] Implement rate limiting
 - [ ] Add comprehensive logging (Serilog)
 - [ ] Implement health checks dashboard
+- [ ] Add RAG (Retrieval Augmented Generation) to AI service
+- [ ] Implement streaming responses for AI chat
 
 ## 📝 License
 
