@@ -1,0 +1,135 @@
+@ApiGateway_HostAddress = http://localhost:5000
+
+### Health Checks - All Services
+
+### Booking Service Health
+GET {{ApiGateway_HostAddress}}/api/bookings/health
+
+### Flight Service Health
+GET {{ApiGateway_HostAddress}}/api/flights/health
+
+### Payment Service Health
+GET {{ApiGateway_HostAddress}}/api/payments/health
+
+### Notification Service Health
+GET {{ApiGateway_HostAddress}}/api/notifications/health
+
+### AI Service Health
+GET {{ApiGateway_HostAddress}}/api/ai/health
+
+### Booking Service - Through Gateway
+
+### Create Booking
+POST {{ApiGateway_HostAddress}}/api/bookings
+Content-Type: application/json
+
+{
+  "userId": "user123",
+  "flightId": "flight456",
+  "passengerName": "John Doe",
+  "passengerEmail": "john@example.com",
+  "numberOfSeats": 2
+}
+
+### Get Booking by ID
+GET {{ApiGateway_HostAddress}}/api/bookings/12345678-1234-1234-1234-123456789012
+
+### Flight Service - Through Gateway
+
+### Create Flight
+POST {{ApiGateway_HostAddress}}/api/flights
+Content-Type: application/json
+
+{
+  "flightNumber": "BA123",
+  "origin": "New York",
+  "destination": "London",
+  "departureTime": "2025-11-15T10:00:00Z",
+  "arrivalTime": "2025-11-15T22:00:00Z",
+  "availableSeats": 150,
+  "price": 599.99
+}
+
+### Search Flights
+GET {{ApiGateway_HostAddress}}/api/flights/search?origin=New%20York&destination=London&date=2025-11-15
+
+### Payment Service - Through Gateway
+
+### Process Payment
+POST {{ApiGateway_HostAddress}}/api/payments
+Content-Type: application/json
+
+{
+  "bookingId": "12345678-1234-1234-1234-123456789012",
+  "userId": "user123",
+  "amount": 1199.98,
+  "currency": "USD",
+  "paymentMethod": "CreditCard"
+}
+
+### Get Payments by Booking ID
+GET {{ApiGateway_HostAddress}}/api/payments/booking/12345678-1234-1234-1234-123456789012
+
+### Notification Service - Through Gateway
+
+### Get User Notifications
+GET {{ApiGateway_HostAddress}}/api/notifications/user/user123
+
+### Get Booking Notifications
+GET {{ApiGateway_HostAddress}}/api/notifications/booking/12345678-1234-1234-1234-123456789012
+
+### Get Pending Notifications
+GET {{ApiGateway_HostAddress}}/api/notifications/pending
+
+### AI Service - Through Gateway
+
+### Chat with AI
+POST {{ApiGateway_HostAddress}}/api/ai/chat
+Content-Type: application/json
+
+{
+  "userId": "user123",
+  "message": "I want to book a flight from New York to London",
+  "sessionId": "session-001"
+}
+
+### Get Flight Recommendations
+POST {{ApiGateway_HostAddress}}/api/ai/recommendations
+Content-Type: application/json
+
+{
+  "userId": "user123",
+  "origin": "New York",
+  "destination": "London",
+  "departureDate": "2025-11-15",
+  "preferredClass": "Business",
+  "maxBudget": 2000
+}
+
+### Get Chat History
+GET {{ApiGateway_HostAddress}}/api/ai/chat/history?sessionId=session-001
+
+### Rate Limiting Test
+
+### Test Rate Limit - Send multiple requests quickly
+### (Booking service allows 100 requests per minute)
+POST {{ApiGateway_HostAddress}}/api/bookings
+Content-Type: application/json
+
+{
+  "userId": "test-user",
+  "flightId": "test-flight",
+  "passengerName": "Test User",
+  "passengerEmail": "test@example.com",
+  "numberOfSeats": 1
+}
+
+### Test AI Rate Limit - Send multiple requests quickly
+### (AI service allows 20 requests per minute)
+POST {{ApiGateway_HostAddress}}/api/ai/chat
+Content-Type: application/json
+
+{
+  "userId": "test-user",
+  "message": "Hello"
+}

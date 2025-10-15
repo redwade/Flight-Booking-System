@@ -5,6 +5,7 @@ A comprehensive flight booking system built with .NET 9.0 microservices architec
 ## 🏗️ Architecture Overview
 
 ### Microservices
+- **API Gateway**: Single entry point using Ocelot (Port 5000)
 - **Booking Service**: Manages flight bookings (Redis)
 - **Flight Service**: Handles flight information and availability (MongoDB)
 - **Payment Service**: Processes payments (PostgreSQL)
@@ -19,6 +20,7 @@ Each microservice follows clean architecture with:
 - **API Layer**: REST API controllers
 
 ### Building Blocks
+- **Ocelot**: API Gateway for routing and aggregation
 - **MassTransit**: Message broker abstraction
 - **RabbitMQ**: Message queue for inter-service communication
 
@@ -33,6 +35,7 @@ Each microservice follows clean architecture with:
 - **PostgreSQL**: Relational database for Payment service
 - **Ollama**: Local LLM runtime for Gemma model
 - **Gemma**: Google's AI model for intelligent features
+- **Ocelot**: API Gateway with rate limiting and caching
 - **xUnit**: Testing framework
 - **Moq**: Mocking framework
 - **Swagger/OpenAPI**: API documentation
@@ -111,11 +114,12 @@ docker exec -it flightbooking-ollama ollama pull gemma2:2b
 ```
 
 3. **Access the services**:
-- Booking API: http://localhost:5001/swagger
-- Flight API: http://localhost:5002/swagger
-- Payment API: http://localhost:5003/swagger
-- Notification API: http://localhost:5004/swagger
-- AI API: http://localhost:5005/swagger
+- **API Gateway**: http://localhost:5000 ⭐ **Use this for all API calls**
+- Booking API: http://localhost:5001/swagger (direct access)
+- Flight API: http://localhost:5002/swagger (direct access)
+- Payment API: http://localhost:5003/swagger (direct access)
+- Notification API: http://localhost:5004/swagger (direct access)
+- AI API: http://localhost:5005/swagger (direct access)
 - RabbitMQ Management: http://localhost:15672 (guest/guest)
 
 ### Running Locally (Development)
@@ -172,7 +176,11 @@ dotnet test tests/MassTransit.Tests/MassTransit.Tests/MassTransit.Tests.csproj
 
 ## 📡 API Endpoints
 
-### Booking API (Port 5001)
+**All endpoints are accessible through the API Gateway at `http://localhost:5000`**
+
+For detailed API Gateway documentation, see [API_GATEWAY_README.md](./API_GATEWAY_README.md)
+
+### Booking API (Port 5001 direct, /api/bookings via gateway)
 - `POST /api/bookings` - Create a new booking
 - `GET /api/bookings/{id}` - Get booking by ID
 - `GET /api/bookings/health` - Health check
