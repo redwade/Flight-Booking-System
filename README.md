@@ -270,6 +270,22 @@ The AI Service provides intelligent features powered by Google's Gemma model:
 
 For detailed AI service documentation, see [AI_SERVICE_README.md](./AI_SERVICE_README.md)
 
+## 📚 Tutorials
+
+Learn how to build this system step-by-step:
+
+- **[Part 1: Project Setup & Core Layer](./TUTORIAL_PART1.md)** - Project structure, entities, and repositories
+- **[Part 2: Application Layer & CQRS](./TUTORIAL_PART2.md)** - Commands, queries, and MediatR
+- **[Part 3: API Layer & Testing](./TUTORIAL_PART3.md)** - Controllers, Swagger, and testing
+- **[Part 4: AI Service with Gemma](./TUTORIAL_PART4_AI_SERVICE.md)** - AI chatbot and recommendations ⭐ NEW
+
+Each tutorial includes:
+- Step-by-step instructions
+- Code examples with explanations
+- Testing procedures
+- Best practices
+- Troubleshooting tips
+
 ## 🚧 Future Enhancements
 
 - [ ] Add API Gateway (Ocelot/YARP)

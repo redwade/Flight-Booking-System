@@ -1,7 +1,7 @@
 # 🎓 Beginner's Tutorial Part 3 - API Layer & Testing
 
 ## Overview
-This is Part 3 (Final) of the complete beginner's tutorial. This part covers:
+This is Part 3 of the complete beginner's tutorial. This part covers:
 - Creating API controllers
 - Configuring Program.cs
 - Setting up appsettings.json
@@ -642,6 +642,10 @@ All files are available in the FlightBookingSystem directory. Review:
 - [ ] Understand the complete flow
 
 **If all checked, you're ready to build the other services!** 🚀
+
+---
+
+**Next Tutorial**: [Part 4: AI Service with Gemma Integration](./TUTORIAL_PART4_AI_SERVICE.md) - Learn how to add AI-powered features to your flight booking system!
 
 ---
 
