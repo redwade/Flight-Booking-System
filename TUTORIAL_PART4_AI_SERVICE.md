@@ -782,6 +782,7 @@ In this tutorial, you learned:
 
 ---
 
-**Previous Tutorial**: [Part 3: Testing and Integration](./TUTORIAL_PART3.md)
+**Previous Tutorial**: [Part 3: API Layer & Testing](./TUTORIAL_PART3.md)  
+**Next Tutorial**: [Part 5: API Gateway with Ocelot](./TUTORIAL_PART5_API_GATEWAY.md)
 
 Happy coding! 🚀🤖

@@ -46,7 +46,7 @@ Build REST APIs:
 
 ---
 
-### [Part 4: AI Service with Gemma Integration](./TUTORIAL_PART4_AI_SERVICE.md) ⭐ NEW
+### [Part 4: AI Service with Gemma Integration](./TUTORIAL_PART4_AI_SERVICE.md)
 **Estimated Time**: 2-3 hours | **Difficulty**: Intermediate
 
 Add AI-powered features:
@@ -61,13 +61,29 @@ Add AI-powered features:
 
 ---
 
+### [Part 5: API Gateway with Ocelot](./TUTORIAL_PART5_API_GATEWAY.md) ⭐ NEW
+**Estimated Time**: 1-2 hours | **Difficulty**: Intermediate
+
+Create a unified entry point:
+- ✅ Setting up Ocelot API Gateway
+- ✅ Configuring routes for all microservices
+- ✅ Implementing rate limiting
+- ✅ Adding response caching
+- ✅ Load balancing and aggregation
+- ✅ Docker integration
+
+**What you'll build**: API Gateway providing single entry point at port 5000
+
+---
+
 ## 🎯 Learning Path
 
 ### For Complete Beginners
 1. Start with **Part 1** - Learn project structure and domain modeling
 2. Continue to **Part 2** - Understand CQRS and event-driven architecture
 3. Move to **Part 3** - Build REST APIs and test the system
-4. Finish with **Part 4** - Add AI capabilities (optional but exciting!)
+4. Add **Part 4** - AI capabilities (optional but exciting!)
+5. Complete with **Part 5** - API Gateway for unified access
 
 ### For Experienced Developers
 - Jump to **Part 2** if you're familiar with clean architecture
@@ -248,16 +264,24 @@ Going beyond the basics
 - [ ] Recommendations working
 - [ ] Understand AI integration
 
+### Part 5 Complete ✅
+- [ ] API Gateway project created
+- [ ] Ocelot configured
+- [ ] All routes working
+- [ ] Rate limiting tested
+- [ ] Caching verified
+- [ ] Understand gateway pattern
+
 ---
 
 ## 🎯 Next Steps After Tutorials
 
 ### Enhance the System
-1. Add authentication (JWT)
-2. Implement API Gateway
-3. Add distributed tracing
-4. Set up monitoring
-5. Deploy to cloud
+1. Add authentication (JWT) to API Gateway
+2. Add distributed tracing (OpenTelemetry)
+3. Set up monitoring (Prometheus/Grafana)
+4. Implement circuit breaker (Polly)
+5. Deploy to cloud (Azure/AWS/GCP)
 
 ### Explore Advanced Topics
 1. Implement saga pattern
